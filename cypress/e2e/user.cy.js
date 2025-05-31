@@ -9,12 +9,15 @@ describe('User', () => {
   let user2;
 
   before(() => {
-    cy.task('generateUser').then((generatedUser) => {
-      user1 = generatedUser;
-    });
-    cy.task('generateUser').then((generatedUser) => {
-      user2 = generatedUser;
-    });
+    return cy
+      .task('generateUser')
+      .then((generatedUser) => {
+        user1 = generatedUser;
+        return cy.task('generateUser');
+      })
+      .then((generatedUser) => {
+        user2 = generatedUser;
+      });
   });
 
   beforeEach(() => {

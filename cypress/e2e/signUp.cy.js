@@ -7,14 +7,11 @@ const homePage = new HomePageObject();
 describe('Sign Up page', () => {
   let user;
 
-  before(() => {
+  beforeEach(() => {
+    cy.task('db:clear');
     cy.task('generateUser').then((generatedUser) => {
       user = generatedUser;
     });
-  });
-
-  beforeEach(() => {
-    cy.task('db:clear');
   });
 
   it('should provide an ability to register with valid data', () => {

@@ -23,18 +23,18 @@ describe('Article', () => {
 
     cy.task('generateArticle').then((generatedArticle) => {
       article = generatedArticle;
+
+      cy.register(user.email, user.username, user.password);
+
+      signInPage.visit();
+      signInPage.typeEmail(user.email);
+      signInPage.typePassword(user.password);
+      signInPage.clickSignInBtn();
+
+      cy.url().should('not.contain', '/login');
+
+      newArticlePage.visit();
     });
-
-    cy.register(user.email, user.username, user.password);
-
-    signInPage.visit();
-    signInPage.typeEmail(user.email);
-    signInPage.typePassword(user.password);
-    signInPage.clickSignInBtn();
-
-    cy.url().should('not.contain', '/login');
-
-    newArticlePage.visit();
   });
 
   it('should be created using New Article form', () => {

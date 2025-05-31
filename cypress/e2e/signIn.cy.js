@@ -8,8 +8,8 @@ describe('Sign In page', () => {
   let user;
 
   before(() => {
-    cy.task('generateUser').then((generateUser) => {
-      user = generateUser;
+    cy.task('generateUser').then((generatedUser) => {
+      user = generatedUser;
     });
   });
 
