@@ -8,7 +8,7 @@ describe('Sign In page', () => {
   let user;
 
   before(() => {
-    cy.task('generateUser').then((generatedUser) => {
+    return cy.task('generateUser').then((generatedUser) => {
       user = generatedUser;
     });
   });
@@ -18,25 +18,29 @@ describe('Sign In page', () => {
   });
 
   it('should provide an ability to log in with existing credentials', () => {
-    cy.register(user.email, user.username, user.password);
+    cy.then(() => {
+      cy.register(user.email, user.username, user.password);
 
-    signInPage.visit();
-    signInPage.typeEmail(user.email);
-    signInPage.typePassword(user.password);
-    signInPage.clickSignInBtn();
+      signInPage.visit();
+      signInPage.typeEmail(user.email);
+      signInPage.typePassword(user.password);
+      signInPage.clickSignInBtn();
 
-    homePage.assertHeaderContainUsername(user.username);
+      homePage.assertHeaderContainUsername(user.username);
+    });
   });
 
   it('should not provide an ability to log in with wrong credentials', () => {
-    cy.register(user.email, user.username, user.password);
+    cy.then(() => {
+      cy.register(user.email, user.username, user.password);
 
-    signInPage.visit();
-    signInPage.typeEmail(user.email);
-    signInPage.typePassword('wrongpassword');
-    signInPage.clickSignInBtn();
+      signInPage.visit();
+      signInPage.typeEmail(user.email);
+      signInPage.typePassword('wrongpassword');
+      signInPage.clickSignInBtn();
 
-    signInPage.assertErrorMessage('Invalid user credentials.');
-    signInPage.assertUrl();
+      signInPage.assertErrorMessage('Invalid user credentials.');
+      signInPage.assertUrl();
+    });
   });
 });

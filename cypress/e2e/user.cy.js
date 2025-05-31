@@ -21,10 +21,15 @@ describe('User', () => {
   });
 
   beforeEach(() => {
-    cy.task('db:clear');
+    return cy.then(() => {
+      if (!user1 || !user2) {
+        throw new Error('Users not properly initialized');
+      }
 
-    cy.register(user1.email, user1.username, user1.password);
-    cy.register(user2.email, user2.username, user2.password);
+      cy.task('db:clear');
+      cy.register(user1.email, user1.username, user1.password);
+      cy.register(user2.email, user2.username, user2.password);
+    });
   });
 
   it('should be able to follow another user', () => {

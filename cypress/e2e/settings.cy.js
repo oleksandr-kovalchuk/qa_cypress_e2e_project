@@ -12,38 +12,30 @@ describe('Settings page', () => {
   beforeEach(() => {
     cy.task('generateUser').then((generatedUser) => {
       user = generatedUser;
-    });
 
-    cy.task('db:clear');
+      cy.task('db:clear');
 
-    cy.then(() => {
       cy.register(user.email, user.username, user.password);
-    });
 
-    signInPage.visit();
-    cy.then(() => {
+      signInPage.visit();
       signInPage.typeEmail(user.email);
       signInPage.typePassword(user.password);
-    });
-    signInPage.clickSignInBtn();
+      signInPage.clickSignInBtn();
 
-    cy.then(() => {
       homePage.assertHeaderContainUsername(user.username);
-    });
 
-    settingsPage.visit();
+      settingsPage.visit();
+    });
   });
 
   it('should provide an ability to update username', () => {
-    cy.then(() => {
-      const newUsername = user.username + 'Updated';
+    const newUsername = user.username + 'Updated';
 
-      settingsPage.clearUsername();
-      settingsPage.typeUsername(newUsername);
-      settingsPage.clickUpdateBtn();
+    settingsPage.clearUsername();
+    settingsPage.typeUsername(newUsername);
+    settingsPage.clickUpdateBtn();
 
-      settingsPage.assertUsernameValue('Update successful!');
-    });
+    settingsPage.assertUsernameValue('Update successful!');
   });
 
   it('should provide an ability to update bio', () => {
@@ -56,26 +48,22 @@ describe('Settings page', () => {
   });
 
   it('should provide an ability to update an email', () => {
-    cy.then(() => {
-      const newEmail = 'updated' + user.email;
+    const newEmail = 'updated' + user.email;
 
-      settingsPage.clearEmail();
-      settingsPage.typeEmail(newEmail);
-      settingsPage.clickUpdateBtn();
+    settingsPage.clearEmail();
+    settingsPage.typeEmail(newEmail);
+    settingsPage.clickUpdateBtn();
 
-      settingsPage.assertUsernameValue('Update successful!');
-    });
+    settingsPage.assertUsernameValue('Update successful!');
   });
 
   it('should provide an ability to update password', () => {
-    cy.then(() => {
-      const newPassword = user.password + 'New';
+    const newPassword = user.password + 'New';
 
-      settingsPage.typePassword(newPassword);
-      settingsPage.clickUpdateBtn();
+    settingsPage.typePassword(newPassword);
+    settingsPage.clickUpdateBtn();
 
-      settingsPage.assertUsernameValue('Update successful!');
-    });
+    settingsPage.assertUsernameValue('Update successful!');
   });
 
   it('should provide an ability to log out', () => {

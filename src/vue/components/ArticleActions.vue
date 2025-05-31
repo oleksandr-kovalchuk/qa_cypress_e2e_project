@@ -120,7 +120,7 @@ export default {
         return;
       }
       this.$store.dispatch('setFollowProfile', {
-        username: this.profile.username,
+        username: this.article.author.username,
         value: !this.article.following,
       });
     },

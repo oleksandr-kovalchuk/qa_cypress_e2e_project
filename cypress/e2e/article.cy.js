@@ -12,28 +12,26 @@ describe('Article', () => {
   let user;
   let article;
 
-  before(() => {
-    cy.task('generateUser').then((generatedUser) => {
-      user = generatedUser;
-    });
-  });
-
   beforeEach(() => {
     cy.task('db:clear');
 
-    cy.task('generateArticle').then((generatedArticle) => {
-      article = generatedArticle;
+    cy.task('generateUser').then((generatedUser) => {
+      user = generatedUser;
 
-      cy.register(user.email, user.username, user.password);
+      return cy.task('generateArticle').then((generatedArticle) => {
+        article = generatedArticle;
 
-      signInPage.visit();
-      signInPage.typeEmail(user.email);
-      signInPage.typePassword(user.password);
-      signInPage.clickSignInBtn();
+        cy.register(user.email, user.username, user.password);
 
-      cy.url().should('not.contain', '/login');
+        signInPage.visit();
+        signInPage.typeEmail(user.email);
+        signInPage.typePassword(user.password);
+        signInPage.clickSignInBtn();
 
-      newArticlePage.visit();
+        cy.url().should('not.contain', '/login');
+
+        newArticlePage.visit();
+      });
     });
   });
 
