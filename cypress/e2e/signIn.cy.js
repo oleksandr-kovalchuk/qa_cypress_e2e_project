@@ -1,6 +1,3 @@
-/// <reference types='cypress' />
-/// <reference types='../support' />
-
 import SignInPageObject from '../support/pages/signIn.pageObject';
 import HomePageObject from '../support/pages/home.pageObject';
 
@@ -11,16 +8,19 @@ describe('Sign In page', () => {
   let user;
 
   before(() => {
-    cy.task('db:clear');
     cy.task('generateUser').then((generateUser) => {
       user = generateUser;
     });
   });
 
+  beforeEach(() => {
+    cy.task('db:clear');
+  });
+
   it('should provide an ability to log in with existing credentials', () => {
-    signInPage.visit();
     cy.register(user.email, user.username, user.password);
 
+    signInPage.visit();
     signInPage.typeEmail(user.email);
     signInPage.typePassword(user.password);
     signInPage.clickSignInBtn();
@@ -29,6 +29,14 @@ describe('Sign In page', () => {
   });
 
   it('should not provide an ability to log in with wrong credentials', () => {
+    cy.register(user.email, user.username, user.password);
 
+    signInPage.visit();
+    signInPage.typeEmail(user.email);
+    signInPage.typePassword('wrongpassword');
+    signInPage.clickSignInBtn();
+
+    signInPage.assertErrorMessage('Invalid user credentials.');
+    signInPage.assertUrl();
   });
 });
